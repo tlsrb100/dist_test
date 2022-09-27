@@ -1,4 +1,4 @@
-
+const port = process.env.PORT || 3000;
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -15,7 +15,14 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              "@babel/preset-env", ["@babel/preset-react", { "runtime": "automatic" }]
+            ]
+          }
+        }
       },
       {
         test: /\.css$/,
@@ -27,6 +34,12 @@ module.exports = {
 
   plugins: [new HtmlWebpackPlugin({
     template: path.resolve(__dirname, "public", "index.html")
-  })]
+  })],
+
+  devServer: {
+    host: 'localhost',
+    port: port,
+    open: true,
+  },
 
 };
